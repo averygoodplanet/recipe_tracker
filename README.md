@@ -30,7 +30,7 @@ Feature List:
 
 Interesting Query:
 ----------------
-+ Show a list of entrees with less than 500 calories per serving, with a prep time
+Show a list of entrees with less than 500 calories per serving, with a prep time
 of 20 minutes or less.
 
 Data Source:
