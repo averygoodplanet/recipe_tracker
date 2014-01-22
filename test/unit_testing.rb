@@ -9,5 +9,4 @@ class TestUnitTest < MiniTest::Unit::TestCase
 
   def test_1_some_function_exists
   end
-
 end
