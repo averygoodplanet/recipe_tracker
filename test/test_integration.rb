@@ -20,6 +20,13 @@ class TestIntegrationTests < MiniTest::Unit::TestCase
     assert_command_output expected, command
   end
 
+  def test4_save_a_recipe
+    `./recipe_tracker create 'Ham Sandwich' -i 'ham, cheese, bread' -d 'put between bread' -t 20 -m 'entree' -s 5 -c 40`
+    results = database.execute("select recipe_name, ingredients, directions, time, meal, serves, calories from recipes")
+    expected = ["Ham Sandwich", 'ham, cheese, bread', 'put between bread', 20, 'entree', 5, 40]
+    assert_equal expected, results[0]
+  end
+
   # def test_valid_purchase_information_gets_printed
   #   command = "./grocerytracker add Cheerios --calories 210 --price 1.50"
   #   expected = "Theoretically creating: a purchase named Cheerios, with 210 calories and $1.50 cost"
