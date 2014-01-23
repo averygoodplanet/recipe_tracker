@@ -8,9 +8,15 @@ class TestIntegrationTests < MiniTest::Unit::TestCase
     assert_command_output expected, command
   end
 
-  def test2_require_recipe_name_for_create
+  def test2_require_recipe_name_on_create
     command = "./recipe_tracker create"
     expected = "Please enter a recipe name."
+    assert_command_output expected, command
+  end
+
+  def test3_require_missing_fields_on_create
+    command = "./recipe_tracker create 'Ham Sandwich' -i 'ham, cheese, bread' -d 'put between bread' -t 20 -m 'entree'"
+    expected = "You must provide the number served and calories of the recipe you are creating."
     assert_command_output expected, command
   end
 
