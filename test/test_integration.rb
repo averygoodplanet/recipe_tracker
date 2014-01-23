@@ -2,10 +2,16 @@ require_relative 'helper'
 
 class TestIntegrationTests < MiniTest::Unit::TestCase
 
-  def test1_error_if_more_than_two_command_line_arguments
-    command = "./recipe_tracker one two three"
-    assert_command_output "Incorrect number of arguments (more than 2), type 'help' for help.",
-    command
+  def test1_parse_create_command_and_puts_options
+    command = "./recipe_tracker create 'Ham Sandwich' -i 'ham, cheese, bread' -d 'put between bread' -t 20 -m 'entree' -s 5 -c 40 --test_output"
+    expected = "Theoretically did: create recipe Ham Sandwich; with ingredients ham, cheese, bread; with directions put between bread; time 20; meal entree; serves 5; calories 40."
+    assert_command_output expected, command
+  end
+
+  def test2_require_recipe_name_for_create
+    command = "./recipe_tracker create"
+    expected = "Please enter a recipe name."
+    assert_command_output expected, command
   end
 
   # def test_valid_purchase_information_gets_printed

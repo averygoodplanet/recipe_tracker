@@ -8,7 +8,7 @@ As  a user, I want to be able to save a new recipe to the database so that I can
 it in the future.
 
 Usage:  ./recipe_tracker create "Ham Sandwich" --ingredients "ham, cheese, bread"
- --directions "put between bread" --time 20 --dish "Entree" --serves 5 --calories
+ --directions "put between bread" --time 20 --meal "Entree" --serves 5 --calories
  40
 
 Acceptance Criteria:
