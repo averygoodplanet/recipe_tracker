@@ -7,7 +7,9 @@ Save a Recipe
 As  a user, I want to be able to save a new recipe to the database so that I can use
 it in the future.
 
-Usage:  ./recipe_tracker create "My New Recipe"
+Usage:  ./recipe_tracker create "Ham Sandwich" --ingredients "ham, cheese, bread"
+ --directions "put between bread" --time 20 --dish "Entree" --serves 5 --calories
+ 40
 
 Acceptance Criteria:
 * Prompts user to enter new recipe data
