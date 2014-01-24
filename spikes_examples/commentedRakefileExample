@@ -1,6 +1,8 @@
 #!/usr/bin/env ruby
 # -*- ruby -*-
 
+# From https://github.com/elizabrock/nss-capstone-2-example
+
 require_relative 'lib/environment'
 # definining Environment class
 # **which creates a new Database connection, defaults to production.
