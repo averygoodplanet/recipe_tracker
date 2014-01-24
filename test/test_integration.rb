@@ -1,7 +1,7 @@
 require_relative 'helper'
 require 'sqlite3'
 
-class TestIntegrationTests < MiniTest::Unit::TestCase
+class TestIntegrationTests < RecipeTest
 
   def test1_parse_create_command_and_puts_options
     command = "./recipe_tracker create 'Ham Sandwich' -i 'ham, cheese, bread' -d 'put between bread' -t 20 -m 'entree' -s 5 -c 40 --test_output"
@@ -23,9 +23,18 @@ class TestIntegrationTests < MiniTest::Unit::TestCase
 
   def test4_save_a_recipe
     `./recipe_tracker create 'Ham Sandwich' -i 'ham, cheese, bread' -d 'put between bread' -t 20 -m 'entree' -s 5 -c 40 -o`
-    database = SQLite3::Database.new("db/recipe_tracker_test.sqlite3")
     results = database.execute("select * from recipes")
     expected = ["Ham Sandwich", 'ham, cheese, bread', 'put between bread', 20, 'entree', 5, 40]
     assert_equal expected, results[0]
+  end
+
+  def test5_save_a_recipe_with_test_database_teardown
+    `./recipe_tracker create 'New Ham Sandwich' -i 'ham, cheese, bread' -d 'put between bread' -t 20 -m 'entree' -s 5 -c 40 -o`
+    results = database.execute("select * from recipes")
+    expected = ["New Ham Sandwich", 'ham, cheese, bread', 'put between bread', 20, 'entree', 5, 40]
+    assert_equal expected, results[0]
+
+    result = database.execute("select count(recipe_name) from recipes")
+    assert_equal 1, result[0][0]
   end
 end
