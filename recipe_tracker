@@ -3,63 +3,10 @@
 require 'optparse'
 require 'sqlite3'
 require_relative 'models/recipe.rb'
+require_relative 'models/user_interface.rb'
 
-###############
-# making a new Recipe object
-# my_recipe = Recipe.new
-# puts "my_recipe: #{my_recipe}"
-###############
-
-options = {}
-
-opt_parser = OptionParser.new do |opt|
-  opt.banner = "Usage: recipe_tracker COMMAND [OPTIONS]"
-  opt.separator  ""
-  opt.separator  "Commands"
-  opt.separator  "     create: add a new recipe to database"
-  opt.separator  ""
-  opt.separator  "Options"
-
-  # example where an option is followed by its own argument
-  # the ALLCAPS is the option's argument
-  opt.on("-i","--ingredients INGREDIENTS","ingredients in the recipe") do |ingredients|
-    options[:ingredients] = ingredients
-  end
-
-  opt.on("-d","--directions DIRECTIONS","directions to prepare recipe") do |directions|
-    options[:directions] = directions
-  end
-
-  opt.on("-t","--time TIME","estimated preparation time") do |time|
-    options[:time] = time
-  end
-
-  opt.on("-m","--meal MEAL","type of recipe, e.g. entree") do |meal|
-    options[:meal] = meal
-  end
-
-  opt.on("-s","--serves SERVES","number of people recipe serves") do |serves|
-    options[:serves] = serves
-  end
-
-  opt.on("-c","--calories CALORIES","calories per serving") do |calories|
-    options[:calories] = calories
-  end
-
-  opt.on("-o", "--test_output", "output for program testing") do |test_output|
-    options[:test_output] = test_output
-  end
-
-  opt.on("-h","--help","help") do
-    puts opt_parser
-  end
-end
-
-# extracts options from ARGV, extracted value will be deleted from ARGV.
-# this allows both of these command to work:
-# ./spike3.rb start -e my_environment -d
-# ./spike3.rb -e my_environment -d start
-opt_parser.parse!
+interface = UserInterface.new
+interface.parse_options
 
 command = ARGV[0]
 name = ARGV[1]
@@ -70,7 +17,8 @@ if name.nil?
 end
 
 required_options = [:ingredients, :directions, :time, :meal, :serves, :calories]
-missing_options = required_options - options.keys
+# missing_options = required_options - options.keys
+missing_options = required_options - interface.options.keys
 
 if missing_options.include?(:serves)
   index = missing_options.index(:serves)
@@ -86,7 +34,7 @@ end
 # and options
 case command
 when "create"
-  Recipe.create(name, options)
+  Recipe.create(name, interface.options)
 end
 
-puts "Theoretically did: #{command} recipe #{name}; with ingredients #{options[:ingredients]}; with directions #{options[:directions]}; time #{options[:time]}; meal #{options[:meal]}; serves #{options[:serves]}; calories #{options[:calories]}." if options[:test_output]
+puts "Theoretically did: #{command} recipe #{name}; with ingredients #{interface.options[:ingredients]}; with directions #{interface.options[:directions]}; time #{interface.options[:time]}; meal #{interface.options[:meal]}; serves #{interface.options[:serves]}; calories #{interface.options[:calories]}." if interface.options[:test_output]
