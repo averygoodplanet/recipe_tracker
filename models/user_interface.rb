@@ -54,9 +54,6 @@ class UserInterface
       end
     end
     # extracts options from ARGV, extracted value will be deleted from ARGV.
-    # this allows both of these command to work:
-    # ./spike3.rb start -e my_environment -d
-    # ./spike3.rb -e my_environment -d start
     opt_parser.parse!
     @options = options
     @command = ARGV[0]
@@ -73,16 +70,21 @@ class UserInterface
   def check_for_missing_options
     required_options = [:ingredients, :directions, :time, :meal, :serves, :calories]
     missing_options = required_options - @options.keys
+    output_missing_options(missing_options) unless missing_options.empty?
+  end
 
+  def formatting_serves_output(missing_options)
     if missing_options.include?(:serves)
       index = missing_options.index(:serves)
       missing_options[index] = "number served"
     end
+    missing_options
+  end
 
-    unless missing_options.empty?
-      puts "You must provide the #{missing_options.join(" and ")} of the recipe you are creating."
-      exit
-    end
+  def output_missing_options(missing_options)
+    missing_options = formatting_serves_output(missing_options)
+    puts "You must provide the #{missing_options.join(" and ")} of the recipe you are creating."
+    exit
   end
 
   def execute_command_line_command
