@@ -84,4 +84,11 @@ class UserInterface
       exit
     end
   end
+
+  def execute_command_line_command
+    case @command
+    when "create"
+      Recipe.create(@name, @options)
+    end
+  end
 end
