@@ -2,6 +2,13 @@
 
 require 'optparse'
 require 'sqlite3'
+require_relative 'models/recipe.rb'
+
+###############
+# making a new Recipe object
+# my_recipe = Recipe.new
+# puts "my_recipe: #{my_recipe}"
+###############
 
 options = {}
 
@@ -75,19 +82,11 @@ unless missing_options.empty?
   exit
 end
 
-
-def create(name, options)
-  options[:test_output] ? which_database = "test" : which_database = "production"
-  database = SQLite3::Database.new("db/recipe_tracker_#{which_database}.sqlite3")
-  sql_statement = "INSERT INTO recipes VALUES ('#{name}', '#{options[:ingredients]}', '#{options[:directions]}', #{options[:time]}, '#{options[:meal]}', #{options[:serves]}, #{options[:calories]})"
-  database.execute(sql_statement)
-end
-
 # this shows how you can route to different methods based on commands
 # and options
 case command
 when "create"
-  create(name, options)
+  Recipe.create(name, options)
 end
 
 puts "Theoretically did: #{command} recipe #{name}; with ingredients #{options[:ingredients]}; with directions #{options[:directions]}; time #{options[:time]}; meal #{options[:meal]}; serves #{options[:serves]}; calories #{options[:calories]}." if options[:test_output]
