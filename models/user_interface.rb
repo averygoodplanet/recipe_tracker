@@ -69,4 +69,19 @@ class UserInterface
       exit
     end
   end
+
+  def check_for_missing_options
+    required_options = [:ingredients, :directions, :time, :meal, :serves, :calories]
+    missing_options = required_options - @options.keys
+
+    if missing_options.include?(:serves)
+      index = missing_options.index(:serves)
+      missing_options[index] = "number served"
+    end
+
+    unless missing_options.empty?
+      puts "You must provide the #{missing_options.join(" and ")} of the recipe you are creating."
+      exit
+    end
+  end
 end
