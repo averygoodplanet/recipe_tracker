@@ -1,0 +1,43 @@
+#!/usr/bin/env ruby
+# -*- ruby -*-
+
+require_relative 'lib/environment'
+# definining Environment class
+# **which creates a new Database connection, defaults to production.
+#class Environment
+#   def self.database_connection(environment = "production")
+#     @connection ||= SQLite3::Database.new("db/grocerytracker_#{environment}.sqlite3")
+#   end
+# end
+require 'rake/testtask'
+Rake::TestTask.new() do |t|
+  t.pattern = "test/test_*.rb"
+end
+
+desc "Run tests"
+# Invoking the “default” task will cause Rake to invoke the “test” task as well.
+task :default => :test
+
+# as one-time thing you run rake bootstrap_database from terminal to create database
+  require 'sqlite3'
+  # setups up production database
+  database = Environment.database_connection("production")
+  # creates the table (e.g. the spreadsheet)
+  create_tables(database)
+end
+
+# as a one-time thing you run rake test_prepare from terminal to create database
+# (the teardown, by comparison is in helper.rb)
+task :test_prepare do
+  require 'sqlite3'
+  # deletes test database
+  File.delete("db/grocerytracker_test.sqlite3")
+  # creates new test database
+  database = Environment.database_connection("test")
+  # creates the table (e.g. the spreadsheet)
+  create_tables(database)
+end
+
+def create_tables(database_connection)
+  database_connection.execute("CREATE TABLE purchases (id INTEGER PRIMARY KEY AUTOINCREMENT, name varchar(50), calories integer, price decimal(5,2))")
+end
