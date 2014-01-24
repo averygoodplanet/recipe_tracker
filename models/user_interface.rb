@@ -62,4 +62,11 @@ class UserInterface
     @command = ARGV[0]
     @name = ARGV[1]
   end
+
+  def check_for_missing_name
+    if @name.nil?
+      puts "Please enter a recipe name."
+      exit
+    end
+  end
 end

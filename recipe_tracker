@@ -7,11 +7,7 @@ require_relative 'models/user_interface.rb'
 
 interface = UserInterface.new
 interface.parse_options
-
-if interface.name.nil?
-  puts "Please enter a recipe name."
-  exit
-end
+interface.check_for_missing_name
 
 required_options = [:ingredients, :directions, :time, :meal, :serves, :calories]
 # missing_options = required_options - options.keys
