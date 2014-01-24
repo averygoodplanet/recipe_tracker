@@ -57,12 +57,6 @@ opt_parser.parse!
 command = ARGV[0]
 name = ARGV[1]
 
-# Hard-coding a single database entry
-puts "Hard-coding a Ham Sandwich entry to production database."
-database = SQLite3::Database.new("db/recipe_tracker_production.sqlite3")
-sql_statement = "INSERT INTO recipes VALUES ('Ham Sandwich', 'ham, cheese, bread', 'put between bread', 20, 'entree', 5, 40)"
-database.execute(sql_statement)
-
 if name.nil?
   puts "Please enter a recipe name."
   exit
@@ -81,13 +75,19 @@ unless missing_options.empty?
   exit
 end
 
+
+def create(name, options)
+  options[:test_output] ? which_database = "test" : which_database = "production"
+  database = SQLite3::Database.new("db/recipe_tracker_#{which_database}.sqlite3")
+  sql_statement = "INSERT INTO recipes VALUES ('#{name}', '#{options[:ingredients]}', '#{options[:directions]}', #{options[:time]}, '#{options[:meal]}', #{options[:serves]}, #{options[:calories]})"
+  database.execute(sql_statement)
+end
+
 # this shows how you can route to different methods based on commands
 # and options
-# case ARGV[0]
-# when "create"
-#   puts "you entered create command with name #{name}, on options #{options.inspect}"
-# else
-#   puts opt_parser
-# end
+case command
+when "create"
+  create(name, options)
+end
 
 puts "Theoretically did: #{command} recipe #{name}; with ingredients #{options[:ingredients]}; with directions #{options[:directions]}; time #{options[:time]}; meal #{options[:meal]}; serves #{options[:serves]}; calories #{options[:calories]}." if options[:test_output]
