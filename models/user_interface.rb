@@ -1,8 +1,10 @@
 class UserInterface
-  attr_reader :options
+  attr_reader :options, :name, :command
 
   def initialize()
     @options = {}
+    @command = ""
+    @name = ""
   end
 
   def parse_options
@@ -57,5 +59,7 @@ class UserInterface
     # ./spike3.rb -e my_environment -d start
     opt_parser.parse!
     @options = options
+    @command = ARGV[0]
+    @name = ARGV[1]
   end
 end

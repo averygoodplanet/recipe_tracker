@@ -8,10 +8,7 @@ require_relative 'models/user_interface.rb'
 interface = UserInterface.new
 interface.parse_options
 
-command = ARGV[0]
-name = ARGV[1]
-
-if name.nil?
+if interface.name.nil?
   puts "Please enter a recipe name."
   exit
 end
@@ -32,9 +29,9 @@ end
 
 # this shows how you can route to different methods based on commands
 # and options
-case command
+case interface.command
 when "create"
-  Recipe.create(name, interface.options)
+  Recipe.create(interface.name, interface.options)
 end
 
-puts "Theoretically did: #{command} recipe #{name}; with ingredients #{interface.options[:ingredients]}; with directions #{interface.options[:directions]}; time #{interface.options[:time]}; meal #{interface.options[:meal]}; serves #{interface.options[:serves]}; calories #{interface.options[:calories]}." if interface.options[:test_output]
+puts "Theoretically did: #{interface.command} recipe #{interface.name}; with ingredients #{interface.options[:ingredients]}; with directions #{interface.options[:directions]}; time #{interface.options[:time]}; meal #{interface.options[:meal]}; serves #{interface.options[:serves]}; calories #{interface.options[:calories]}." if interface.options[:test_output]
