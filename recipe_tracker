@@ -57,6 +57,12 @@ opt_parser.parse!
 command = ARGV[0]
 name = ARGV[1]
 
+# Hard-coding a single database entry
+puts "Hard-coding a Ham Sandwich entry to production database."
+database = SQLite3::Database.new("db/recipe_tracker_production.sqlite3")
+sql_statement = "INSERT INTO recipes VALUES ('Ham Sandwich', 'ham, cheese, bread', 'put between bread', 20, 'entree', 5, 40)"
+database.execute(sql_statement)
+
 if name.nil?
   puts "Please enter a recipe name."
   exit
