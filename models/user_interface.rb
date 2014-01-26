@@ -7,6 +7,13 @@ class UserInterface
     @name = ""
   end
 
+  def start_program
+    self.parse_options
+    self.check_for_missing_name
+    self.check_for_missing_options
+    self.execute_command_line_command
+  end
+
   def parse_options
       require 'optparse'
       options = {}

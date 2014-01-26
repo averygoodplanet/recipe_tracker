@@ -7,9 +7,6 @@ require_relative 'models/user_interface.rb'
 require_relative 'models/log.rb'
 
 interface = UserInterface.new
-interface.parse_options
-interface.check_for_missing_name
-interface.check_for_missing_options
-interface.execute_command_line_command
+interface.start_program
 
 Log.test_output_theoretically_did(interface)
