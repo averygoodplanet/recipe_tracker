@@ -9,8 +9,6 @@ class UserInterface
 
   def start_program
     self.parse_options
-    self.check_for_missing_name
-    self.check_for_missing_options
     self.execute_command_line_command
   end
 
@@ -56,6 +54,10 @@ class UserInterface
         options[:test_output] = test_output
       end
 
+      opt.on("-n", "--name", "indicated recipe name in edit phase") do |name|
+        options[:name] = name
+      end
+
       opt.on("-h","--help","help") do
         puts opt_parser
       end
@@ -74,8 +76,7 @@ class UserInterface
     end
   end
 
-  def check_for_missing_options
-    required_options = [:ingredients, :directions, :time, :meal, :serves, :calories]
+  def check_for_missing_options(required_options)
     missing_options = required_options - @options.keys
     output_missing_options(missing_options) unless missing_options.empty?
   end
@@ -97,7 +98,12 @@ class UserInterface
   def execute_command_line_command
     case @command
     when "create"
+      self.check_for_missing_name
+      required_options = [:ingredients, :directions, :time, :meal, :serves, :calories]
+      self.check_for_missing_options(required_options)
       Recipe.create(@name, @options)
+    when "edit"
+      Recipe.edit(@options)
     end
   end
 end

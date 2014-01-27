@@ -24,5 +24,5 @@ def make_database(name)
   # create the database file
   database = SQLite3::Database.new("db/recipe_tracker_#{name}.sqlite3")
   # create the empty recipes table within the database file
-  database.execute("CREATE TABLE recipes ( recipe_name varchar(20), ingredients text, directions text, time integer, meal varchar(10), serves integer, calories integer)")
+  database.execute("CREATE TABLE recipes (id INTEGER PRIMARY KEY AUTOINCREMENT, recipe_name varchar(20), ingredients text, directions text, time integer, meal varchar(10), serves integer, calories integer)")
 end

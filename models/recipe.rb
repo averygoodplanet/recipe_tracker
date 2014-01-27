@@ -5,4 +5,8 @@ class Recipe
     sql_statement = "INSERT INTO recipes VALUES ('#{name}', '#{options[:ingredients]}', '#{options[:directions]}', #{options[:time]}, '#{options[:meal]}', #{options[:serves]}, #{options[:calories]})"
     database.execute(sql_statement)
   end
+
+  def edit
+    puts "In EDIT function"
+  end
 end
