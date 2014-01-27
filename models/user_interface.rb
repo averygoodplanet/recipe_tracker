@@ -54,8 +54,8 @@ class UserInterface
         options[:test_output] = test_output
       end
 
-      opt.on("-n", "--name", "indicated recipe name in edit phase") do |name|
-        options[:name] = name
+      opt.on("-n", "--recipe_name RECIPE_NAME", "indicated recipe name in edit phase") do |recipe_name|
+        options[:recipe_name] = recipe_name
       end
 
       opt.on("-h","--help","help") do
@@ -103,7 +103,7 @@ class UserInterface
       self.check_for_missing_options(required_options)
       Recipe.create(@name, @options)
     when "edit"
-      Recipe.edit(@options)
+      Recipe.edit(@name, @options)
     end
   end
 end
