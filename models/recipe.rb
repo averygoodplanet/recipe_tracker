@@ -6,7 +6,7 @@ class Recipe
     database.execute(sql_statement)
   end
 
-  def edit
+  def self.edit(options)
     puts "In EDIT function"
   end
 end

@@ -96,9 +96,9 @@ class UserInterface
   end
 
   def execute_command_line_command
+    self.check_for_missing_name
     case @command
     when "create"
-      self.check_for_missing_name
       required_options = [:ingredients, :directions, :time, :meal, :serves, :calories]
       self.check_for_missing_options(required_options)
       Recipe.create(@name, @options)
