@@ -15,6 +15,19 @@ Acceptance Criteria:
 * Prompts user to enter new recipe data
 * Correctly saves the recipe data to the database
 
+Update a Recipe
+--------------
+
+As a user, I want to be able to make changes to a recipe that is already saved in
+the database.
+
+Usage: ./recipe_tracker edit "Ham Sandwich" --name "Prosciutto Sandwich"
+ingredients "prosciutto, cheese, bread" --calories 60
+
+Acceptance Criteria:
+*Prompts user to enter modified data
+*Correctly updates the recipe in the database
+
 
 Find and View a Recipe By Name
 ----------------------------
