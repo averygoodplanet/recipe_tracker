@@ -56,4 +56,18 @@ class TestIntegrationTests < RecipeTest
     result = database.execute("select count(recipe_name) from recipes")
     assert_equal 0, result[0][0]
   end
+
+  def test8_deletes_only_selected_recipe
+    `./recipe_tracker create 'New Ham Sandwich' -i 'ham, cheese, bread' -d 'put between bread' -t 20 -m 'entree' -s 5 -c 40 -o`
+    `./recipe_tracker create 'Chicago Hot Dog' -i 'hot dog, bun, neon relish, tomato' -d 'assemble, eat, wait for heartburn' -t 5 -m 'entree' -s 1 -c 1000 -o`
+    `./recipe_tracker create 'New Ham Slice' -i 'ham coldcuts' -d 'eat by hand' -t 2 -m 'snack' -s 1 -c 100 -o`
+
+    results = database.execute("select * from recipes")
+    expected = ["New Ham Sandwich", 'ham, cheese, bread', 'put between bread', 20, 'entree', 5, 40]
+    assert_equal expected, results[0]
+
+    `./recipe_tracker delete "New Ham Sandwich" -o`
+    result = database.execute("select count(recipe_name) from recipes")
+    assert_equal 2, result[0][0]
+  end
 end
