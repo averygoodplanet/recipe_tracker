@@ -1,8 +1,8 @@
 User Stories
 ========
 
-Save a Recipe
-------------
+Save a Recipe (C in CRUD)
+--------------------
 
 As  a user, I want to be able to save a new recipe to the database so that I can use
 it in the future.
@@ -15,8 +15,26 @@ Acceptance Criteria:
 * Prompts user to enter new recipe data
 * Correctly saves the recipe data to the database
 
-Update a Recipe
---------------
+
+Find and View a Recipe By Name (R in CRUD)
+-----------------------------------
+
+As a user, I want to be able to search for and view a recipe by name, so that I can
+then use that recipe.
+
+Usage: ./recipe_tracker find "Potato Salad"
+
+Acceptance Criteria:
+* Returns exact match of searched name, if found.
+* If no exact match is found, returns fuzzy matches of searched name, and asks
+user to select one recipe to view.
+* If no (exact or fuzzy) matches, gives message that no matches found and
+urges user to check spelling, and indicates how to page through list of all recipe
+names.
+
+
+Update a Recipe (U in CRUD)
+----------------------
 
 As a user, I want to be able to make changes to a recipe that is already saved in
 the database.
@@ -28,38 +46,8 @@ Acceptance Criteria:
 *Prompts user to enter modified data
 *Correctly updates the recipe in the database
 
-
-Find and View a Recipe By Name
-----------------------------
-
-As a user, I want to be able to search for and view a recipe by name, so that I can
-then use that recipe.
-
-Usage: ./recipe_tracker find "Potato Salad"
-
-Acceptance Criteria:
-* Returns exact match of searched name, if found.
-* Returns fuzzy matches of searched name, if no exact match.
-* If no (exact or fuzzy) matches, gives message that no matches found and
-urges user to check spelling, and how to page through recipe names.
-
-Show List of Recipes in Database
-----------------------------
-
-As a user, I want to be able to page through a list of names of recipes in the
-database, so that later I can retrieve a recipe by name.
-
-Usage: ./recipe_tracker page
-
-Acceptance Criteria:
-* Show message to user, indicating button to press to continue paging through
-recipe names, and also indicating the button used to exit.
-* Allows user to page through recipe names
-
-
-
-Delete a Recipe By Name
----------------------
+Delete a Recipe By Name (D in CRUD)
+-----------------------------
 
 As a user, I want to be able to delete a recipe from the database, so that I can
 remove recipes that I don't like or no longer want to use.
@@ -82,6 +70,19 @@ Usage: ./recipe_tracker query "entree 500 20"
 Acceptance Criteria:
 * Return recipes matching the user's query of type, calorie (or less), and prep
 time.
+
+Show List of Recipes in Database
+----------------------------
+
+As a user, I want to be able to page through a list of names of recipes in the
+database, so that later I can retrieve a recipe by name.
+
+Usage: ./recipe_tracker page
+
+Acceptance Criteria:
+* Show message to user, indicating button to press to continue paging through
+recipe names, and also indicating the button used to exit.
+* Allows user to page through recipe names
 
 
 Help Feature
