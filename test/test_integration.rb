@@ -52,7 +52,7 @@ class TestIntegrationTests < RecipeTest
     expected = ["New Ham Sandwich", 'ham, cheese, bread', 'put between bread', 20, 'entree', 5, 40]
     assert_equal expected, results[0]
 
-    `./recipe_tracker delete "New Ham Sandwich"`
+    `./recipe_tracker delete "New Ham Sandwich" -o`
     result = database.execute("select count(recipe_name) from recipes")
     assert_equal 0, result[0][0]
   end

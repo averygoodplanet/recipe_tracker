@@ -104,6 +104,8 @@ class UserInterface
       Recipe.create(@name, @options)
     when "edit"
       Recipe.edit(@name, @options)
+    when "delete"
+      Recipe.delete(@name, @options)
     end
   end
-end
+end # end of class

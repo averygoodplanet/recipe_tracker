@@ -1,11 +1,5 @@
 class Recipe
 
-  def self.execute_sql(sql_statement, which_database = false)
-    which_database == true ? which_database = "test" : which_database = "production"
-    database = SQLite3::Database.new("db/recipe_tracker_#{which_database}.sqlite3")
-    database.execute(sql_statement)
-  end
-
   def self.create(name, options)
     sql_statement = "INSERT INTO recipes VALUES ('#{name}', '#{options[:ingredients]}', '#{options[:directions]}', #{options[:time]}, '#{options[:meal]}', #{options[:serves]}, #{options[:calories]})"
     which_database = options.include?(:test_output)
@@ -22,6 +16,21 @@ class Recipe
     serialization = self.serialize_hash(options)
     sql_statement = "UPDATE recipes SET #{serialization} WHERE recipe_name=#{old_name}"
     execute_sql(sql_statement, which_database)
+  end
+
+  def self.delete(name, options)
+    # puts "in delete function****"
+    which_database = options.include?(:test_output)
+    puts which_database
+    sql_statement = "DELETE from recipes WHERE recipe_name='#{name}'"
+    puts sql_statement
+    execute_sql(sql_statement, which_database)
+  end
+
+  def self.execute_sql(sql_statement, which_database = false)
+    which_database == true ? which_database = "test" : which_database = "production"
+    database = SQLite3::Database.new("db/recipe_tracker_#{which_database}.sqlite3")
+    database.execute(sql_statement)
   end
 
   def self.serialize_hash(hash)
