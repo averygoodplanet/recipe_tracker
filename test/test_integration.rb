@@ -45,4 +45,15 @@ class TestIntegrationTests < RecipeTest
     expected = ["Prosciutto Sandwich", "prosciutto, cheese, bread", "put between bread", 20, 'entree', 5, 60]
     assert_equal expected, results[0]
   end
+
+  def test7_delete_a_recipe
+    `./recipe_tracker create 'New Ham Sandwich' -i 'ham, cheese, bread' -d 'put between bread' -t 20 -m 'entree' -s 5 -c 40 -o`
+    results = database.execute("select * from recipes")
+    expected = ["New Ham Sandwich", 'ham, cheese, bread', 'put between bread', 20, 'entree', 5, 40]
+    assert_equal expected, results[0]
+
+    `./recipe_tracker delete "New Ham Sandwich"`
+    result = database.execute("select count(recipe_name) from recipes")
+    assert_equal 0, result[0][0]
+  end
 end
