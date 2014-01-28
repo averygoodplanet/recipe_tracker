@@ -38,11 +38,10 @@ then use that recipe.
 Usage: ./recipe_tracker find "Potato Salad"
 
 Acceptance Criteria:
-* Returns fuzzy matches of searched name
-* If no matches, gives message that no matches found and urges user to check
-spelling, and how to page through recipe names.
-
-
+* Returns exact match of searched name, if found.
+* Returns fuzzy matches of searched name, if no exact match.
+* If no (exact or fuzzy) matches, gives message that no matches found and
+urges user to check spelling, and how to page through recipe names.
 
 Show List of Recipes in Database
 ----------------------------
