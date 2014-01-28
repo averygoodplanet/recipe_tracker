@@ -12,23 +12,21 @@ class Recipe
   end
 
   def self.edit(name, options)
-    old_name = name
+    old_name = "'#{name}'"
     new_name = options[:recipe_name]
     puts "In EDIT function, with old name #{old_name} and new name #{new_name}."
-    puts self.hash_to_array_of_strings(options)
-#     sql_statement = " "
-#     UPDATE table_name
-# SET column1=value1,column2=value2,...
-# WHERE some_column=some_value;
+    serialization = self.serialize_hash(options)
+    sql_statement = "UPDATE recipes SET #{serialization} WHERE recipe_name=#{old_name}"
+    puts sql_statement
   end
 
-  def self.hash_to_array_of_strings(hash)
+  def self.serialize_hash(hash)
     array = hash.to_a
     array_of_strings = []
     for i in 0..(array.length-1)
       assignment_string = array[i][0].to_s + "='" + array[i][1].to_s + "'"
       array_of_strings.push(assignment_string)
     end
-    array_of_strings
+    array_of_strings.join(",")
   end
 end
