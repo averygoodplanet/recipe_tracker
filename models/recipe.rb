@@ -54,5 +54,18 @@ class Recipe
   end
 
   def self.format(unformatted_recipe)
+    name, ingredients, directions, time, meal, serves, calories = unformatted_recipe[0], unformatted_recipe[1], unformatted_recipe[2], unformatted_recipe[3], unformatted_recipe[4], unformatted_recipe[5], unformatted_recipe[6]
+    ingredients = ingredients.split(', ').join("\n")
+    formatted_recipe = [ "*****",
+                        "Recipe: #{name}", "\n",
+                        "Ingredients:",
+                        "#{ingredients}", "\n",
+                        "Directions:", "\n",
+                        "#{directions}", "\n",
+                        "Time: #{time}", "\n",
+                        "Meal: #{meal}",
+                        "Serves: #{serves}",
+                        "Calories: #{calories}",
+                        "***end of recipe***", "\n"]
   end
 end
