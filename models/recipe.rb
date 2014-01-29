@@ -58,11 +58,11 @@ class Recipe
     ingredients = ingredients.split(', ').join("\n")
     formatted_recipe = [ "*****",
                         "Recipe: #{name}", "\n",
-                        "Ingredients:",
+                        "Ingredients:", "\n",
                         "#{ingredients}", "\n",
                         "Directions:", "\n",
                         "#{directions}", "\n",
-                        "Time: #{time}", "\n",
+                        "Time: #{time}",
                         "Meal: #{meal}",
                         "Serves: #{serves}",
                         "Calories: #{calories}",
