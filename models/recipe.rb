@@ -27,6 +27,8 @@ class Recipe
     execute_sql(sql_statement, which_database)
   end
 
+######### Helper Functions #################
+
   def self.execute_sql(sql_statement, which_database = false)
     which_database == true ? which_database = "test" : which_database = "production"
     database = SQLite3::Database.new("db/recipe_tracker_#{which_database}.sqlite3")
@@ -41,5 +43,8 @@ class Recipe
       array_of_strings.push(assignment_string)
     end
     array_of_strings.join(",")
+  end
+
+  def self.retrieve(name)
   end
 end
