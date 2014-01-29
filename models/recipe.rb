@@ -52,4 +52,7 @@ class Recipe
     recipe_array = database.execute(sql_statement)[0]
     recipe_array
   end
+
+  def self.format(unformatted_recipe)
+  end
 end

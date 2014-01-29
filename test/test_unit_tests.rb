@@ -23,4 +23,28 @@ class TestUnitTest < MiniTest::Unit::TestCase
     assert_equal expected, result
     teardown_unit_test
   end
+
+  def test_2u_format_properly_formats_recipe
+    unformatted_recipe = ["Turkey Hot Dog", "bun, dog, pickle, relish, tomato", "assemble ingredients", 2, "entree", 1, 300]
+    result = Recipe.format(unformatted_recipe)
+    expected = [ "*****",
+                        "Recipe: Turkey Hot Dog",
+                        "\n",
+                        "Ingredients:",
+                        "bun\ndog\npickle\nrelish\ntomato",
+                        "\n",
+                        "Directions:",
+                        "\n",
+                        "assemble ingredients",
+                        "\n",
+                        "Time: 2",
+                        "\n",
+                        "Meal: entree",
+                        "Serves: 1",
+                        "Calories: 300",
+                        "***end of recipe***",
+                        "\n"]
+    assert_equal expected, result
+    teardown_unit_test
+  end
 end
