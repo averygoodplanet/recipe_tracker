@@ -45,6 +45,11 @@ class Recipe
     array_of_strings.join(",")
   end
 
-  def self.retrieve(name)
+  def self.retrieve(name, which_database = false)
+    which_database == true ? which_database = "test" : which_database = "production"
+    database = SQLite3::Database.new("db/recipe_tracker_#{which_database}.sqlite3")
+    sql_statement = "select recipe_name, ingredients, directions, time, meal, serves,calories from recipes WHERE recipe_name='#{name}'"
+    recipe_array = database.execute(sql_statement)[0]
+    recipe_array
   end
 end
