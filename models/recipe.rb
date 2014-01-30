@@ -82,6 +82,14 @@ class Recipe
     recipe_array
   end
 
+  def self.recipes_under_calories(calories, test_output = false)
+    test_output == true ? which_database = "test" : which_database = "production"
+    database = SQLite3::Database.new("db/recipe_tracker_#{which_database}.sqlite3")
+    sql_statement = "select recipe_name from recipes where calories < #{calories.to_i}"
+    recipe_array = database.execute(sql_statement)
+    recipe_array.flatten
+  end
+
   def self.format(unformatted_recipe)
     name, ingredients, directions, time, meal, serves, calories = unformatted_recipe[0], unformatted_recipe[1], unformatted_recipe[2], unformatted_recipe[3], unformatted_recipe[4], unformatted_recipe[5], unformatted_recipe[6]
     ingredients = ingredients.split(', ').join("\n")
