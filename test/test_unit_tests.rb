@@ -55,4 +55,12 @@ class TestUnitTest < MiniTest::Unit::TestCase
     assert_equal expected, result
     teardown_unit_test
   end
+
+  def test_4u_recipes_under_calories_returns_recipe_names
+    Recipe.import("example_data3_simplerows.csv", true)
+    result = Recipe.recipes_under_calories(600, true)
+    expected = ["Cabbage Comfort", "Tacos"]
+    assert_equal expected, result
+    teardown_unit_test
+  end
 end
