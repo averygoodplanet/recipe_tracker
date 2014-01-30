@@ -48,7 +48,7 @@ class TestUnitTest < MiniTest::Unit::TestCase
     teardown_unit_test
   end
 
-  def test_3_import_takes_data_from_CSV_and_saves_to_database
+  def test_3u_import_takes_data_from_CSV_and_saves_to_database
     Recipe.import("example_data3_simplerows.csv", true)
     result = Recipe.retrieve("Tacos", true)
     expected = ["Tacos", "beef, cheese, lettuce, sour cream, hot sauce", "cook the ground beef, assemble ingredients", 20, "entree", 4, 500]
