@@ -115,6 +115,10 @@ class UserInterface
     when "import"
       @options.include?(:test_output) ? test_output = true : test_output = false
       Recipe.import(@name, test_output)
+    when "calories_under"
+      @options.include?(:test_output) ? test_output = true : test_output = false
+      puts Recipe.recipes_under_calories(@name, test_output)
+      exit
     end
   end
 end # end of class

@@ -125,6 +125,7 @@ Calories: 300
   end
 
   def test12_under_calories_works_from_command_line
+    `./recipe_tracker import "example_data3_simplerows.csv" -o`
     command_to_run = "./recipe_tracker calories_under 600 -o"
     expected_output = "Cabbage Comfort\nTacos"
     shell_output = ""
