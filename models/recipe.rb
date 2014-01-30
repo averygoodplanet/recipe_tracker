@@ -39,11 +39,25 @@ class Recipe
     execute_sql(sql_statement, which_database)
   end
 
-  def self.import(csv_filename_in_data_folder)
+  def self.import(csv_filename_in_data_folder, test_output = false)
     file_path = File.realpath(File.join('data', csv_filename_in_data_folder))
-    array_of_arrays = CSV.read(file_path)
-    puts array_of_arrays
-    puts array_of_arrays.inspect
+    # array_of_arrays = CSV.read(file_path)
+    # puts array_of_arrays
+    # puts array_of_arrays.inspect
+    name = ""
+    options = {}
+    CSV.foreach(file_path, headers: true) do |row_hash|
+      name = row_hash["recipe_name"]
+      options = {:ingredients => row_hash["ingredients"],
+                        :directions => row_hash["directions"],
+                        :time => row_hash["time"],
+                        :meal => row_hash["meal"],
+                        :serves => row_hash["serves"],
+                        :calories => row_hash["calories"]}
+      options[:test_output] = true if test_output
+      # puts "Name: #{name}"
+      # puts "Options: #{options.inspect}\n\n\n"
+    end
   end
 
 ######### Helper Functions #################
