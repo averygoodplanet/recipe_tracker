@@ -25,6 +25,7 @@ class UserInterface
       opt.separator  "     edit: modify an existing recipe"
       opt.separator  "     delete: delete a recipe"
       opt.separator  "     import: import a CSV file from data folder"
+      opt.separator "     calories_under: returns recipe names under number of calories"
       opt.separator  "Options"
 
       # example where an option is followed by its own argument
