@@ -127,7 +127,10 @@ class UserInterface
       exit
     when "all"
       @options.include?(:test_output) ? test_output = true : test_output = false
-      puts Recipe.all_recipe_names(test_output)
+      # Re: pagination in cli using hirb: https://www.ruby-forum.com/topic/192016
+      require 'hirb'
+      Hirb::View.enable
+      Hirb::View.capture_and_render { puts Recipe.all_recipe_names(test_output) }
     end
   end
 end # end of class
