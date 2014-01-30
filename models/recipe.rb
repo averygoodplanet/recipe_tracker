@@ -8,6 +8,10 @@ class Recipe
 
   def self.view(name, which_database)
     unformatted_recipe = retrieve(name, which_database)
+    if unformatted_recipe.nil?
+      puts "#{name} wasn't found in the database. Type --help for help menu."
+      exit
+    end
     formatted_recipe =format(unformatted_recipe)
     puts formatted_recipe
     # Exiting here to prevent extra test_output on -o
