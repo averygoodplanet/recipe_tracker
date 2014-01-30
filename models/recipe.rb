@@ -39,6 +39,13 @@ class Recipe
     execute_sql(sql_statement, which_database)
   end
 
+  def self.import(path_to_csv_file)
+    # arr_of_arrs = CSV.read("path/to/file.csv")
+    # array_of_arrays = CSV.read("./recipe_tracker/data/example_data.csv")
+    array_of_arrays = CSV.read("/Users/home/Code/NSS-BackEnd/recipe_tracker/data/example_data.csv")
+    puts array_of_arrays
+  end
+
 ######### Helper Functions #################
 
   def self.execute_sql(sql_statement, which_database = false)

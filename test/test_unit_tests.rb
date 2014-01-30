@@ -4,6 +4,7 @@
 # require File.expand_path("./a_class_file.rb")
 require 'minitest/autorun'
 require 'sqlite3'
+require 'csv'
 require_relative 'helper'
 require_relative '../models/recipe.rb'
 
@@ -45,5 +46,9 @@ class TestUnitTest < MiniTest::Unit::TestCase
                         "\n"]
     assert_equal expected, result
     teardown_unit_test
+  end
+
+  def test_3_CSV_spike
+    Recipe.import("")
   end
 end

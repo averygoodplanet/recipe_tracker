@@ -2,6 +2,7 @@
 
 require 'optparse'
 require 'sqlite3'
+require 'csv'
 require_relative 'models/recipe.rb'
 require_relative 'models/user_interface.rb'
 require_relative 'models/log.rb'
