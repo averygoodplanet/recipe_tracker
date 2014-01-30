@@ -102,6 +102,9 @@ class UserInterface
       required_options = [:ingredients, :directions, :time, :meal, :serves, :calories]
       self.check_for_missing_options(required_options)
       Recipe.create(@name, @options)
+    when "view"
+      which_database = options.include?(:test_output)
+      Recipe.view(@name, which_database)
     when "edit"
       Recipe.edit(@name, @options)
     when "delete"

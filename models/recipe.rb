@@ -6,6 +6,14 @@ class Recipe
     execute_sql(sql_statement, which_database)
   end
 
+  def self.view(name, which_database)
+    unformatted_recipe = retrieve(name, which_database)
+    formatted_recipe =format(unformatted_recipe)
+    puts formatted_recipe
+    # Exiting here to prevent extra test_output on -o
+    exit
+  end
+
   def self.edit(name, options)
     old_name = "'#{name}'"
     new_name = options[:recipe_name]
