@@ -70,4 +70,40 @@ class TestIntegrationTests < RecipeTest
     result = database.execute("select count(recipe_name) from recipes")
     assert_equal 2, result[0][0]
   end
+
+  def test9_view_finds_and_displays_recipe
+    `./recipe_tracker create 'New Ham Sandwich' -i 'ham, cheese, bread' -d 'put between bread' -t 20 -m 'entree' -s 5 -c 40 -o`
+    `./recipe_tracker create 'Turkey Hot Dog' -i 'bun, dog, pickle, relish, tomato' -d 'assemble ingredients' -t 2 -m 'entree' -s 1 -c 300 -o`
+    `./recipe_tracker create 'New Ham Slice' -i 'ham coldcuts' -d 'eat by hand' -t 2 -m 'snack' -s 1 -c 100 -o`
+
+    command_to_run = "./recipe_tracker view 'Turkey Hot Dog'"
+    expected_output =
+  <<-eos
+   *****
+    Recipe: Turkey Hot Dog
+
+    Ingredients:
+
+    bun
+    dog
+    pickle
+    relish
+    tomato
+
+    Directions:
+
+    assemble ingredients
+
+    Time: 2
+    Meal: entree
+    Serves: 1
+    Calories: 300
+    ***end of recipe***
+  eos
+  shell_output = ""
+  IO.popen(command_to_run, 'r+') do |pipe|
+    shell_output = pipe.read.chomp
+  end
+  assert_equal expected_output, shell_output
+  end
 end
