@@ -61,7 +61,7 @@ class Recipe
     database = SQLite3::Database.new("db/recipe_tracker_#{which_database}.sqlite3")
     sql_statement = "select recipe_name from recipes"
     recipe_array = database.execute(sql_statement)
-    recipe_array.flatten
+    recipe_array.flatten.sort
   end
 
 ######### Helper Functions #################
