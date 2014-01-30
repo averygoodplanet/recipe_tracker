@@ -5,6 +5,7 @@
 require 'minitest/autorun'
 require 'sqlite3'
 require 'csv'
+require 'set'
 require_relative 'helper'
 require_relative '../models/recipe.rb'
 
@@ -66,7 +67,7 @@ class TestUnitTest < MiniTest::Unit::TestCase
 
   def test_5u_all_recipes_returns_all_recipe_names
     Recipe.import("example_data4_simplerows.csv", true)
-    result = Recipe.all_recipe_names
+    result = Recipe.all_recipe_names(true)
     expected = ["Tacos", "Cabbage Comfort", "Pizza"]
     assert_equal expected.to_set, result.to_set
     teardown_unit_test
@@ -74,7 +75,7 @@ class TestUnitTest < MiniTest::Unit::TestCase
 
   def test_6u_all_recipes_returns_all_recipe_names_alphabetical_order
     Recipe.import("example_data4_simplerows.csv", true)
-    result = Recipe.all_recipe_names
+    result = Recipe.all_recipe_names(true)
     expected = ["Cabbage Comfort", "Pizza", "Tacos"]
     assert_equal expected, result
     teardown_unit_test

@@ -56,6 +56,14 @@ class Recipe
     end
   end
 
+  def self.all_recipe_names(test_output = false)
+    test_output == true ? which_database = "test" : which_database = "production"
+    database = SQLite3::Database.new("db/recipe_tracker_#{which_database}.sqlite3")
+    sql_statement = "select recipe_name from recipes"
+    recipe_array = database.execute(sql_statement)
+    recipe_array.flatten
+  end
+
 ######### Helper Functions #################
 
   def self.execute_sql(sql_statement, which_database = false)
