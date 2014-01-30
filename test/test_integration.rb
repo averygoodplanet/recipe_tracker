@@ -106,4 +106,14 @@ Calories: 300
   end
   assert_equal expected_output, shell_output
   end
+
+  def test10_view_puts_message_when_recipe_not_found
+      command_to_run = "./recipe_tracker view 'Banana Bread' -o"
+      expected_output = "Banana Bread wasn't found in the database. Type --help for help menu."
+      shell_output = ""
+      IO.popen(command_to_run, 'r+') do |pipe|
+        shell_output = pipe.read.chomp
+      end
+      assert_equal expected_output, shell_output
+  end
 end
