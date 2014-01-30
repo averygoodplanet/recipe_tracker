@@ -63,4 +63,20 @@ class TestUnitTest < MiniTest::Unit::TestCase
     assert_equal expected, result
     teardown_unit_test
   end
+
+  def test_5u_all_recipes_returns_all_recipe_names
+    Recipe.import("example_data4_simplerows.csv", true)
+    result = Recipe.all_recipe_names
+    expected = ["Tacos", "Cabbage Comfort", "Pizza"]
+    assert_equal expected.to_set, result.to_set
+    teardown_unit_test
+  end
+
+  def test_6u_all_recipes_returns_all_recipe_names_alphabetical_order
+    Recipe.import("example_data4_simplerows.csv", true)
+    result = Recipe.all_recipe_names
+    expected = ["Cabbage Comfort", "Pizza", "Tacos"]
+    assert_equal expected, result
+    teardown_unit_test
+  end
 end
