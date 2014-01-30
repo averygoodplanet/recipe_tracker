@@ -21,7 +21,9 @@ class UserInterface
       opt.separator  ""
       opt.separator  "Commands"
       opt.separator  "     create: add a new recipe to database"
-      opt.separator  ""
+      opt.separator  "     view: display a recipe"
+      opt.separator  "     edit: modify an existing recipe"
+      opt.separator  "     delete: delete a recipe"
       opt.separator  "Options"
 
       # example where an option is followed by its own argument
