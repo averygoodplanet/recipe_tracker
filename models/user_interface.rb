@@ -17,13 +17,14 @@ class UserInterface
       options = {}
 
       opt_parser = OptionParser.new do |opt|
-      opt.banner = "Usage: recipe_tracker COMMAND [OPTIONS]"
+      opt.banner = "Usage: recipe_tracker COMMAND ['recipe name'] [OPTIONS]"
       opt.separator  ""
       opt.separator  "Commands"
       opt.separator  "     create: add a new recipe to database"
       opt.separator  "     view: display a recipe"
       opt.separator  "     edit: modify an existing recipe"
       opt.separator  "     delete: delete a recipe"
+      opt.separator  "     import: import a CSV file from data folder"
       opt.separator  "Options"
 
       # example where an option is followed by its own argument
