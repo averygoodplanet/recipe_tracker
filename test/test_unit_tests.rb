@@ -49,6 +49,6 @@ class TestUnitTest < MiniTest::Unit::TestCase
   end
 
   def test_3_CSV_spike
-    Recipe.import("")
+    Recipe.import("example_data.csv")
   end
 end
