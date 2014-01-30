@@ -22,15 +22,11 @@ Find and View a Recipe By Name (R in CRUD)
 As a user, I want to be able to search for and view a recipe by name, so that I can
 then use that recipe.
 
-Usage: ./recipe_tracker find "Potato Salad"
+Usage: ./recipe_tracker view "Potato Salad"
 
 Acceptance Criteria:
 * Returns exact match of searched name, if found.
-* If no exact match is found, returns fuzzy matches of searched name, and asks
-user to select one recipe to view.
-* If no (exact or fuzzy) matches, gives message that no matches found and
-urges user to check spelling, and indicates how to page through list of all recipe
-names.
+* If no match found, gives message that no matches found.
 
 
 Update a Recipe (U in CRUD)
@@ -43,8 +39,8 @@ Usage: ./recipe_tracker edit "Ham Sandwich" --name "Prosciutto Sandwich"
 ingredients "prosciutto, cheese, bread" --calories 60
 
 Acceptance Criteria:
-*Prompts user to enter modified data
-*Correctly updates the recipe in the database
+* Prompts user to enter modified data
+* Correctly updates the recipe in the database
 
 Delete a Recipe By Name (D in CRUD)
 -----------------------------
@@ -59,17 +55,29 @@ Acceptance Criteria:
 * After user confirmation, delete the recipe from the database.
 
 
-Search for Recipes by Criteria (type, calorie, prep time)
------------------------------------------------
+Import Entries from a CSV file into the Database
+--------------------------------------
 
-As a user, I want to be able to search for recipes that meet my criteria, so that I
-can quickly choose from recipes rather than searching through them manually.
+As a user, I want to be able to import recipes from a CSV, so that I don't have to
+enter them all manually from the command line, one-by-one.
 
-Usage: ./recipe_tracker query "entree 500 20"
+Usage: ./recipe_tracker import "example.csv"
 
 Acceptance Criteria:
-* Return recipes matching the user's query of type, calorie (or less), and prep
-time.
+* Program locates the file in the data directory and then creates entries in the
+database from each row in the CSV.
+
+
+Search for Recipes by Max Calories
+----------------------------
+
+As a user, I want to be able to search for recipes under a certain number of calories.
+
+Usage: ./recipe_tracker calories_under 600
+
+Acceptance Criteria:
+* Return recipes under the amount of calories indicated.
+
 
 Show List of Recipes in Database
 ----------------------------
@@ -77,12 +85,11 @@ Show List of Recipes in Database
 As a user, I want to be able to page through a list of names of recipes in the
 database, so that later I can retrieve a recipe by name.
 
-Usage: ./recipe_tracker page
+Usage: ./recipe_tracker all
 
 Acceptance Criteria:
-* Show message to user, indicating button to press to continue paging through
-recipe names, and also indicating the button used to exit.
-* Allows user to page through recipe names
+* Lists all recipes in alphabetical order
+* If output extends beyond terminal height, scrolls output (similar to git log output).
 
 
 Help Feature
@@ -91,10 +98,8 @@ Help Feature
 As a user, I want the program to remind me of the available commands, so that
 I don't have to try to remember them all.
 
- Usage: ./recipe_tracker help
+ Usage: ./recipe_tracker --help
 
  Acceptance Criteria:
- * On normal program screens place message indicating that typing 'help' will
- give the help feature.
  * On typing 'help' command, provide a short list of each program command and
  what each command does.
