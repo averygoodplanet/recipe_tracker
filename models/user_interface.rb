@@ -26,6 +26,7 @@ class UserInterface
       opt.separator  "     delete: delete a recipe"
       opt.separator  "     import: import a CSV file from data folder"
       opt.separator "     calories_under: returns recipe names under number of calories"
+      opt.separator "     all:  lists all recipe names in alphabetical order"
       opt.separator  "Options"
 
       # example where an option is followed by its own argument
@@ -100,26 +101,33 @@ class UserInterface
   end
 
   def execute_command_line_command
-    self.check_for_missing_name
     case @command
     when "create"
+      self.check_for_missing_name
       required_options = [:ingredients, :directions, :time, :meal, :serves, :calories]
       self.check_for_missing_options(required_options)
       Recipe.create(@name, @options)
     when "view"
+      self.check_for_missing_name
       which_database = options.include?(:test_output)
       Recipe.view(@name, which_database)
     when "edit"
+      self.check_for_missing_name
       Recipe.edit(@name, @options)
     when "delete"
+      self.check_for_missing_name
       Recipe.delete(@name, @options)
     when "import"
+      self.check_for_missing_name
       @options.include?(:test_output) ? test_output = true : test_output = false
       Recipe.import(@name, test_output)
     when "calories_under"
       @options.include?(:test_output) ? test_output = true : test_output = false
       puts Recipe.recipes_under_calories(@name, test_output)
       exit
+    when "all"
+      @options.include?(:test_output) ? test_output = true : test_output = false
+      puts Recipe.all_recipe_names(test_output)
     end
   end
 end # end of class
