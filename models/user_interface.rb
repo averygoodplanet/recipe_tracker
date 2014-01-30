@@ -111,6 +111,9 @@ class UserInterface
       Recipe.edit(@name, @options)
     when "delete"
       Recipe.delete(@name, @options)
+    when "import"
+      @options.include?(:test_output) ? test_output = true : test_output = false
+      Recipe.import(@name, test_output)
     end
   end
 end # end of class
