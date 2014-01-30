@@ -123,4 +123,14 @@ Calories: 300
     expected = ["Tacos", "beef, cheese, lettuce, sour cream, hot sauce", "cook the ground beef, assemble ingredients", 20, "entree", 4, 500]
     assert_equal expected, result
   end
+
+  def test12_under_calories_works_from_command_line
+    command_to_run = "./recipe_tracker calories_under 600 -o"
+    expected_output = "Cabbage Comfort\nTacos"
+    shell_output = ""
+    IO.popen(command_to_run, 'r+') do |pipe|
+      shell_output = pipe.read.chomp
+    end
+    assert_equal expected_output, shell_output
+  end
 end
