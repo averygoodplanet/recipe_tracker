@@ -1,11 +1,17 @@
 #!/usr/bin/env ruby
 
+# THESE were in lib/environment in Eliza'z futureperfect project
+require 'rubygems'
+require 'bundler/setup'
+require 'active_record'
+
 require 'optparse'
 require 'sqlite3'
 require 'csv'
-require_relative 'models/recipe.rb'
-require_relative 'models/user_interface.rb'
-require_relative 'models/log.rb'
+
+# modified this to allow removing require statements for each model
+project_root = File.dirname(File.absolute_path(__FILE__))
+Dir.glob(project_root + "/models/*.rb").each{|f| require f}
 
 interface = UserInterface.new
 interface.start_program
