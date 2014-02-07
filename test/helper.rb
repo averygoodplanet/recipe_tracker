@@ -3,6 +3,11 @@ require_relative '../lib/environment'
 
 class RecipeTest < MiniTest::Unit::TestCase
 
+  def setup
+    Environment.environment = "test"
+    Environment.connect_to_database
+  end
+
   def database
     database = SQLite3::Database.new("db/recipe_tracker_test.sqlite3")
   end

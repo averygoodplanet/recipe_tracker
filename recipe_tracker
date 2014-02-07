@@ -1,5 +1,22 @@
 #!/usr/bin/env ruby
 
+
+=begin
+In Eliza's grocerytracker dealing with Environment
+
+require_relative 'lib/environment'
+
+uses options[:environment] for which database
+
+#new#
+Environment.environment = @options[:environment] || "production"
+@options.delete(:environment)
+
+#main#
+Environment.connect_to_database
+=end
+
+
 # THESE were in lib/environment in Eliza'z futureperfect project
 require 'rubygems'
 require 'bundler/setup'

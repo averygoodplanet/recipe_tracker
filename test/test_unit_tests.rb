@@ -2,7 +2,7 @@
 
 require_relative 'helper'
 
-class TestUnitTest < MiniTest::Unit::TestCase
+class TestUnitTest < RecipeTest
   def teardown_unit_test
     database = SQLite3::Database.new("db/recipe_tracker_test.sqlite3")
     database.execute("delete from recipes")
