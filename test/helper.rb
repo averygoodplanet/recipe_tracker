@@ -1,4 +1,5 @@
 require 'minitest/autorun'
+require_relative '../lib/environment'
 
 class RecipeTest < MiniTest::Unit::TestCase
 

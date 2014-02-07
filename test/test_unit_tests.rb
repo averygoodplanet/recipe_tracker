@@ -1,13 +1,6 @@
 # Run this unit test file by typing "ruby test/this_file_name.rb"
 
-# name of the class file being tested
-# require File.expand_path("./a_class_file.rb")
-require 'minitest/autorun'
-require 'sqlite3'
-require 'csv'
-require 'set'
 require_relative 'helper'
-require_relative '../models/recipe.rb'
 
 class TestUnitTest < MiniTest::Unit::TestCase
   def teardown_unit_test

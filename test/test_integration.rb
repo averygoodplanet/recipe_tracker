@@ -1,5 +1,4 @@
 require_relative 'helper'
-require 'sqlite3'
 
 class TestIntegrationTests < RecipeTest
 
