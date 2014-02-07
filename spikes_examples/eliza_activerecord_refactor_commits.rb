@@ -2,32 +2,46 @@
 ###  "Add active_record and refactor requiring the model classes"
 
 #Gemfile#############
+ Requiring activerecord
  +gem 'activerecord'
 
 #lib/environment.rb########
+Requiring rubygems and bundler/setup
 +require 'rubygems'
  +require 'bundler/setup'
- +require 'active_record'
+
+#File.dirname("/home/gumby/work/ruby.rb")   #=> "/home/gumby/work"
+#  File.absolute_path("~oracle/bin")       #=> "<relative_path>/~oracle/bin"
+ # File.absolute_path converst a path to an absolute path
+  # In the file foo.rb, __FILE__ would be interpreted as "foo.rb".
+  #therefore,
+  # project_root = File.dirname(File.absolutepath(__FILE__))
+  #                     = File.dirname(File.absolutepath(environment.rb))
+  #                     = File.dirname("...../lib/environment.rb")
+  #                     = "......./lib"
  +project_root = File.dirname(File.absolute_path(__FILE__))
+ # Dir.glob("......../lib" + "/../models/*.rb") =
+ # Dir.glob(directory up one from lib  then file rb files in models folder)
+# then require each of those files
  +Dir.glob(project_root + "/../models/*.rb").each{|f| require f}
- -require_relative '../models/purchase'
- -require_relative '../models/category'
 
-#test/test_categories.rb##########
- -require_relative '../models/category'
-
- #test/test_purchase.rb#########
--require_relative '../models/purchase'
-
+#multiple files
+ REMOVING require statement for '../models/MODEL'
 ####################################################
 
 ######### 2nd commit from Wednesday 2/5 ###############
 ## Refactoring database bootstrapping to ActiveRecord-based tasks
 
 #Rakefile###########
-+require 'active_record'
+
  -Rake::TestTask.new() do |t|
+# Creating a rake task that runs a set of tests
+# rake db:test:prepare   Checks for pending migrations and loads the test schem
+# believe big picture this is making sure test database state is current for tests
  +Rake::TestTask.new(test: "db:test:prepare") do |t|
+
+
+#deleting the old database bootstrap and create table tasks
  -desc 'create the production database setup'
  -task :bootstrap_database do
  -  Environment.environment = "production"
@@ -44,19 +58,30 @@
  -def create_tables(database_connection)
  -  database_connection.execute("CREATE TABLE purchases (id INTEGER PRIMARY KEY AUTOINCREMENT, name varchar(50), calories integer, price decimal(5,2), category_id integer)")
  -  database_connection.execute("CREATE TABLE categories (id INTEGER PRIMARY KEY AUTOINCREMENT, name varchar(50))")
+
+#Rake::Namespace looks up task names in namespace scope
+# looks up tasks within :db namespace
+# believe this means will tasks like db:migrate db:test for :migrate and :prepare below
  +db_namespace = namespace :db do
  +  desc "Migrate the db"
- +  task :migrate do
+ +  task :migrate do # rake db:migrate
+        #for rake db:migrate, use (connect to) the production database
  +    Environment.environment = 'production'
  +    Environment.connect_to_database
+        # runs the migrations located in db/migrate/
+        # migrations get the database state to current version
  +    ActiveRecord::Migrator.migrate("db/migrate/")
+      #db:schema:dump  updates the db/schema.rb file to match database structure
  +    db_namespace["schema:dump"].invoke
  +  end
  +  namespace :test do
  +    desc "Prepare the test database"
- +    task :prepare do
+ +    task :prepare do  # rake db:test:prepare
+          # on rake:test:prepare use and connect to test database
  +      Environment.environment = 'test'
  +      Environment.connect_to_database
+          # load and execute the "db/schema.rb" file or if it doesn't exist, exit program
+          # with error message
  +      file = ENV['SCHEMA'] || "db/schema.rb"
  +      if File.exists?(file)
  +        load(file)
@@ -69,23 +94,25 @@
  +  task :rollback do
  +    Environment.environment = 'production'
  +    Environment.connect_to_database
- +    step = ENV['STEP'] ? ENV['STEP'].to_i : 1
+ +    step = ENV['STEP'] ? ENV['STEP'].to_i : 1  #use ENV step as integer, if none, use 1
  +    ActiveRecord::Migrator.rollback(ActiveRecord::Migrator.migrations_paths, step)
  +    db_namespace["schema:dump"].invoke
  +  end
  +  namespace :schema do
  +    desc 'Create a db/schema.rb file that can be portably used against any DB supported by AR'
- +    task :dump do
+ +    task :dump do     # rake schema:dump
  +      require 'active_record/schema_dumper'
+          # connect to production database
  +      Environment.environment = 'production'
  +      Environment.connect_to_database
+          # use current schema file
  +      filename = ENV['SCHEMA'] || "db/schema.rb"
  +      File.open(filename, "w:utf-8") do |file|
  +        ActiveRecord::SchemaDumper.dump(ActiveRecord::Base.connection, file)
  +      end
  +    end
  +  end
-  end
+
 
 ########### Her first commit from Thursday#################
 ### Refactor test database access into [MODEL].count
