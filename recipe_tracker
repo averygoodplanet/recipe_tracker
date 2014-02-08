@@ -26,9 +26,15 @@ require 'optparse'
 require 'sqlite3'
 require 'csv'
 
+require_relative 'lib/environment'
+require_relative 'lib/database'
+
 # modified this to allow removing require statements for each model
+# order doesn't matter here
 project_root = File.dirname(File.absolute_path(__FILE__))
 Dir.glob(project_root + "/models/*.rb").each{|f| require f}
+
+require_relative 'lib/user_interface'
 
 interface = UserInterface.new
 interface.start_program
