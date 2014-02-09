@@ -2,12 +2,11 @@ class Recipe
 
   def self.create(name, options)
     sql_statement = "INSERT INTO recipes(recipe_name, ingredients, directions, time, meal, serves, calories) VALUES('#{name}', '#{options[:ingredients]}', '#{options[:directions]}', #{options[:time]}, '#{options[:meal]}', #{options[:serves]}, #{options[:calories]})"
-    which_database = options.include?(:test_output)
     execute_sql(sql_statement, which_database)
   end
 
-  def self.view(name, which_database)
-    unformatted_recipe = retrieve(name, which_database)
+  def self.view(name)
+    unformatted_recipe = retrieve(name)
     if unformatted_recipe.nil?
       puts "#{name} wasn't found in the database. Type --help for help menu."
       exit
@@ -21,25 +20,17 @@ class Recipe
   def self.edit(name, options)
     old_name = "'#{name}'"
     new_name = options[:recipe_name]
-    which_database = options.include?(:test_output)
-    # Need to remove test_output from options hash so that it isn't placed in
-    # the sql_statement.
-    options.delete(:test_output)
     serialization = self.serialize_hash(options)
     sql_statement = "UPDATE recipes SET #{serialization} WHERE recipe_name=#{old_name}"
-    execute_sql(sql_statement, which_database)
+    execute_sql(sql_statement)
   end
 
   def self.delete(name, options)
-    # puts "in delete function****"
-    which_database = options.include?(:test_output)
-    puts which_database
     sql_statement = "DELETE from recipes WHERE recipe_name='#{name}'"
-    puts sql_statement
-    execute_sql(sql_statement, which_database)
+    execute_sql(sql_statement)
   end
 
-  def self.import(csv_filename_in_data_folder, test_output = false)
+  def self.import(csv_filename_in_data_folder)
     file_path = File.realpath(File.join('data', csv_filename_in_data_folder))
     name = ""
     options = {}
@@ -51,24 +42,26 @@ class Recipe
                         :meal => row_hash["meal"],
                         :serves => row_hash["serves"],
                         :calories => row_hash["calories"]}
-      options[:test_output] = true if test_output
       create(name, options)
     end
   end
 
-  def self.all_recipe_names(test_output = false)
-    test_output == true ? which_database = "test" : which_database = "production"
-    database = SQLite3::Database.new("db/recipe_tracker_#{which_database}.sqlite3")
+  def self.all_recipe_names
     sql_statement = "select recipe_name from recipes"
-    recipe_array = database.execute(sql_statement)
+    recipe_array = execute_sql(sql_statement)
     recipe_array.flatten.sort
   end
 
 ######### Helper Functions #################
 
-  def self.execute_sql(sql_statement, which_database = false)
-    which_database == true ? which_database = "test" : which_database = "production"
-    database = SQLite3::Database.new("db/recipe_tracker_#{which_database}.sqlite3")
+  def self.execute_sql(sql_statement)
+    database = Environment.database_connection
+=begin
+this thread across files
+(recipe.rb) database = Environment.database_connection
+(environment.rb in self.database_connection) Database.connection(@@environment)
+(database.rb in self.connection) @connection ||= Database.new("db/recipe_tracker_#{environment}.sqlite3")
+=end
     database.execute(sql_statement)
   end
 
@@ -82,17 +75,13 @@ class Recipe
     array_of_strings.join(",")
   end
 
-  def self.retrieve(name, which_database = false)
-    which_database == true ? which_database = "test" : which_database = "production"
-    database = SQLite3::Database.new("db/recipe_tracker_#{which_database}.sqlite3")
+  def self.retrieve(name)
     sql_statement = "select recipe_name, ingredients, directions, time, meal, serves,calories from recipes WHERE recipe_name='#{name}'"
-    recipe_array = database.execute(sql_statement)[0]
+    recipe_array = execute_sql(sql_statement)[0]
     recipe_array
   end
 
-  def self.recipes_under_calories(calories, test_output = false)
-    test_output == true ? which_database = "test" : which_database = "production"
-    database = SQLite3::Database.new("db/recipe_tracker_#{which_database}.sqlite3")
+  def self.recipes_under_calories(calories)
     sql_statement = "select recipe_name from recipes where calories < #{calories.to_i}"
     recipe_array = database.execute(sql_statement)
     recipe_array.flatten

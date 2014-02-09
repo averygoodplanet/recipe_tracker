@@ -9,6 +9,7 @@ class UserInterface
 
   def start_program
     self.parse_options
+    self.set_database_environment
     self.execute_command_line_command
   end
 
@@ -74,6 +75,11 @@ class UserInterface
     @name = ARGV[1]
   end
 
+  def set_database_environment
+    Environment.environment = @options[:test_output] || "production"
+    @options.delete(:test_output)
+  end
+
   def check_for_missing_name
     if @name.nil?
       puts "Please enter a recipe name."
@@ -109,8 +115,7 @@ class UserInterface
       Recipe.create(@name, @options)
     when "view"
       self.check_for_missing_name
-      which_database = options.include?(:test_output)
-      Recipe.view(@name, which_database)
+      Recipe.view(@name)
     when "edit"
       self.check_for_missing_name
       Recipe.edit(@name, @options)
@@ -119,18 +124,15 @@ class UserInterface
       Recipe.delete(@name, @options)
     when "import"
       self.check_for_missing_name
-      @options.include?(:test_output) ? test_output = true : test_output = false
-      Recipe.import(@name, test_output)
+      Recipe.import(@name)
     when "calories_under"
-      @options.include?(:test_output) ? test_output = true : test_output = false
-      puts Recipe.recipes_under_calories(@name, test_output)
+      puts Recipe.recipes_under_calories(@name)
       exit
     when "all"
-      @options.include?(:test_output) ? test_output = true : test_output = false
       # Re: pagination in cli using hirb: https://www.ruby-forum.com/topic/192016
       require 'hirb'
       Hirb::View.enable
-      Hirb::View.capture_and_render { puts Recipe.all_recipe_names(test_output) }
+      Hirb::View.capture_and_render { puts Recipe.all_recipe_names }
     end
   end
 end # end of class
