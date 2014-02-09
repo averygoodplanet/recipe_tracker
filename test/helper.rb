@@ -9,7 +9,6 @@ class RecipeTest < MiniTest::Unit::TestCase
   end
 
   def database
-    # database = SQLite3::Database.new("db/recipe_tracker_test.sqlite3")
     database = Environment.database_connection
   end
 

@@ -118,7 +118,7 @@ Calories: 300
 
   def test11_import_command_works_from_command_line
     `./recipe_tracker import "example_data3_simplerows.csv" -o`
-    result = Recipe.retrieve("Tacos", true)
+    result = Recipe.retrieve("Tacos")
     expected = ["Tacos", "beef, cheese, lettuce, sour cream, hot sauce", "cook the ground beef, assemble ingredients", 20, "entree", 4, 500]
     assert_equal expected, result
   end

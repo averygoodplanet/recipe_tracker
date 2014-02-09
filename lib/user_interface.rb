@@ -76,7 +76,7 @@ class UserInterface
   end
 
   def set_database_environment
-    Environment.environment = @options[:test_output] || "production"
+    @options[:test_output] ? Environment.environment = "test" : Environment.environment = "production"
     @options.delete(:test_output)
   end
 
