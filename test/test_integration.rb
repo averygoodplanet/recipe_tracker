@@ -2,11 +2,11 @@ require_relative 'helper'
 
 class TestIntegrationTests < RecipeTest
 
-  def test1_parse_create_command_and_puts_options
-    command = "./recipe_tracker create 'Ham Sandwich' -i 'ham, cheese, bread' -d 'put between bread' -t 20 -m 'entree' -s 5 -c 40 --test_output"
-    expected = "Theoretically did: create recipe Ham Sandwich; with ingredients ham, cheese, bread; with directions put between bread; time 20; meal entree; serves 5; calories 40."
-    assert_command_output expected, command
-  end
+  # def test1_parse_create_command_and_puts_options
+  #   command = "./recipe_tracker create 'Ham Sandwich' -i 'ham, cheese, bread' -d 'put between bread' -t 20 -m 'entree' -s 5 -c 40 --test_output"
+  #   expected = "Theoretically did: create recipe Ham Sandwich; with ingredients ham, cheese, bread; with directions put between bread; time 20; meal entree; serves 5; calories 40."
+  #   assert_command_output expected, command
+  # end
 
   def test2_require_recipe_name_on_create
     command = "./recipe_tracker create"

@@ -12,6 +12,8 @@ require 'logger'
 require 'yaml'
 
 class Environment
+  attr_reader :environment
+
   def self.environment= environment
     ## @@ means class variable, @ means instance variable
     @@environment = environment

@@ -39,4 +39,4 @@ require_relative 'lib/user_interface'
 interface = UserInterface.new
 interface.start_program
 
-Log.test_output_theoretically_did(interface)
+# Log.test_output_theoretically_did(interface)
