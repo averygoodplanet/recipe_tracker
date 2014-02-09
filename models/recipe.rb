@@ -2,7 +2,7 @@ class Recipe
 
   def self.create(name, options)
     sql_statement = "INSERT INTO recipes(recipe_name, ingredients, directions, time, meal, serves, calories) VALUES('#{name}', '#{options[:ingredients]}', '#{options[:directions]}', #{options[:time]}, '#{options[:meal]}', #{options[:serves]}, #{options[:calories]})"
-    execute_sql(sql_statement, which_database)
+    execute_sql(sql_statement)
   end
 
   def self.view(name)
@@ -83,7 +83,7 @@ this thread across files
 
   def self.recipes_under_calories(calories)
     sql_statement = "select recipe_name from recipes where calories < #{calories.to_i}"
-    recipe_array = database.execute(sql_statement)
+    recipe_array = execute_sql(sql_statement)
     recipe_array.flatten
   end
 
