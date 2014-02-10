@@ -2,14 +2,13 @@ class Recipe < ActiveRecord::Base
 
   def self.view(name)
     unformatted_recipe = retrieve(name)
-    if unformatted_recipe.nil?
+    # remembering that [] is not nil
+    if unformatted_recipe.nil? || unformatted_recipe.empty?
       puts "#{name} wasn't found in the database. Type --help for help menu."
       exit
     end
-    formatted_recipe =format(unformatted_recipe)
+    formatted_recipe = format(unformatted_recipe)
     puts formatted_recipe
-    # Exiting here to prevent extra test_output on -o
-    exit
   end
 
   def self.edit(name, options)
@@ -43,7 +42,7 @@ class Recipe < ActiveRecord::Base
   end
 
   def self.retrieve(name)
-    Recipe.where(recipe_name: name).pluck(:recipe_name, :ingredients, :directions, :time, :meal, :serves, :calories).flatten
+     Recipe.where(recipe_name: name).pluck(:recipe_name, :ingredients, :directions, :time, :meal, :serves, :calories).flatten
   end
 
   def self.recipes_under_calories(calories)
