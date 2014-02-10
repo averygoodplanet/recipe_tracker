@@ -2,6 +2,7 @@ require_relative 'helper'
 
 class TestIntegrationTests < RecipeTest
 
+  # This test is unnecessary (initial spike) now.
   # def test1_parse_create_command_and_puts_options
   #   command = "./recipe_tracker create 'Ham Sandwich' -i 'ham, cheese, bread' -d 'put between bread' -t 20 -m 'entree' -s 5 -c 40 --test_output"
   #   expected = "Theoretically did: create recipe Ham Sandwich; with ingredients ham, cheese, bread; with directions put between bread; time 20; meal entree; serves 5; calories 40."
@@ -22,38 +23,50 @@ class TestIntegrationTests < RecipeTest
 
   def test4_save_a_recipe
     `./recipe_tracker create 'Ham Sandwich' -i 'ham, cheese, bread' -d 'put between bread' -t 20 -m 'entree' -s 5 -c 40 -o`
-    results = Recipe.all
+    result = Recipe.all.first
+    result_hash = result.attributes
+    result_hash.delete("id")
+    result_array = result_hash.values
     expected = ["Ham Sandwich", 'ham, cheese, bread', 'put between bread', 20, 'entree', 5, 40]
-    assert_equal expected, results[0]
+    assert_equal expected, result_array
   end
 
   def test5_save_a_recipe_with_test_database_teardown
     `./recipe_tracker create 'New Ham Sandwich' -i 'ham, cheese, bread' -d 'put between bread' -t 20 -m 'entree' -s 5 -c 40 -o`
-    results = Recipe.all
+    results = Recipe.all.first
+    result_hash = results.attributes
+    result_hash.delete("id")
+    result_array = result_hash.values
     expected = ["New Ham Sandwich", 'ham, cheese, bread', 'put between bread', 20, 'entree', 5, 40]
-    assert_equal expected, results[0]
+    assert_equal expected, result_array
 
     result = Recipe.count
-    assert_equal 1, result[0][0]
+    assert_equal 1, result
   end
 
   def test6_update_a_recipe
     `./recipe_tracker create 'New Ham Sandwich' -i 'ham, cheese, bread' -d 'put between bread' -t 20 -m 'entree' -s 5 -c 40 -o`
     `./recipe_tracker edit "New Ham Sandwich" -n "Prosciutto Sandwich" -i "prosciutto, cheese, bread" -c 60 -o`
-    results = Recipe.all
+    results = Recipe.all.first
+    result_hash = results.attributes
+    result_hash.delete("id")
+    result_array = result_hash.values
     expected = ["Prosciutto Sandwich", "prosciutto, cheese, bread", "put between bread", 20, 'entree', 5, 60]
-    assert_equal expected, results[0]
+    assert_equal expected, result_array
   end
 
   def test7_delete_a_recipe
     `./recipe_tracker create 'New Ham Sandwich' -i 'ham, cheese, bread' -d 'put between bread' -t 20 -m 'entree' -s 5 -c 40 -o`
-    results = Recipe.all
+    results = Recipe.all.first
+    result_hash = results.attributes
+    result_hash.delete("id")
+    result_array = result_hash.values
     expected = ["New Ham Sandwich", 'ham, cheese, bread', 'put between bread', 20, 'entree', 5, 40]
-    assert_equal expected, results[0]
+    assert_equal expected, result_array
 
     `./recipe_tracker delete "New Ham Sandwich" -o`
     result = Recipe.count
-    assert_equal 0, result[0][0]
+    assert_equal 0, result
   end
 
   def test8_deletes_only_selected_recipe
@@ -61,9 +74,12 @@ class TestIntegrationTests < RecipeTest
     `./recipe_tracker create 'Chicago Hot Dog' -i 'hot dog, bun, neon relish, tomato' -d 'assemble, eat, wait for heartburn' -t 5 -m 'entree' -s 1 -c 1000 -o`
     `./recipe_tracker create 'New Ham Slice' -i 'ham coldcuts' -d 'eat by hand' -t 2 -m 'snack' -s 1 -c 100 -o`
 
-    results = Recipe.all
+    results = Recipe.all.first
+    result_hash = results.attributes
+    result_hash.delete("id")
+    result_array = result_hash.values
     expected = ["New Ham Sandwich", 'ham, cheese, bread', 'put between bread', 20, 'entree', 5, 40]
-    assert_equal expected, results[0]
+    assert_equal expected, result_array
 
     `./recipe_tracker delete "New Ham Sandwich" -o`
     result = Recipe.count

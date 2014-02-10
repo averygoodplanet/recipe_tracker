@@ -5,12 +5,7 @@ require_relative 'helper'
 class TestUnitTest < RecipeTest
   def teardown_unit_test
     database = Environment.connect_to_database
-    # database = Environment.database_connection
-    # will swith to Environment.connect_to_database
-    # database.execute("delete from recipes")
     Recipe.destroy_all
-    # DatabaseCleaner.clean
-    # or e.g. Recipe.destroy_all
   end
 
   def test_1u_retrieve_returns_hash_of_correct_recipe
@@ -19,9 +14,6 @@ class TestUnitTest < RecipeTest
     options2 =  {:recipe_name => "Cold Stew", :ingredients=>'water, vegetables', :directions=>'boil ingredients together then cool', :time=>'10', :meal=>'entree', :serves=>'5', :calories=>'400'}
     Recipe.create(options2)
     result = Recipe.retrieve("Chicago Hot Dog")
-    # result_hash = result.attributes
-    # result_hash.delete("id")
-    # result_values = result_hash.values
     expected = ["Chicago Hot Dog", "bun, dog, pickle, relish, tomato", "assemble ingredients", 2, "entree", 1, 300]
     assert_equal expected, result
     teardown_unit_test
