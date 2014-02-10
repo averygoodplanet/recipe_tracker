@@ -1,5 +1,8 @@
 require 'minitest/autorun'
 require_relative '../lib/environment'
+require 'database_cleaner'
+
+DatabaseCleaner.strategy = :truncation
 
 class RecipeTest < MiniTest::Unit::TestCase
 
@@ -14,6 +17,7 @@ class RecipeTest < MiniTest::Unit::TestCase
 
   def teardown
     database.execute("delete from recipes")
+    # DatabaseCleaner.clean
   end
 
   def assert_command_output expected, command
