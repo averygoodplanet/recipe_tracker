@@ -19,11 +19,6 @@ class Environment
     @@environment = environment
   end
 
-  #connects to database (NOT ActiveRecord version)
-  def self.database_connection
-    Database.connection(@@environment)
-  end
-
   #connects to database using ActiveRecord
   def self.connect_to_database
     #converts YAML to a hash, with keys e.g. "test" or "production"

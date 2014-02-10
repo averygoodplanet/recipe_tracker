@@ -4,19 +4,24 @@ require_relative 'helper'
 
 class TestUnitTest < RecipeTest
   def teardown_unit_test
-    database = Environment.database_connection
+    database = Environment.connect_to_database
+    # database = Environment.database_connection
     # will swith to Environment.connect_to_database
-    database.execute("delete from recipes")
+    # database.execute("delete from recipes")
+    Recipe.destroy_all
     # DatabaseCleaner.clean
     # or e.g. Recipe.destroy_all
   end
 
   def test_1u_retrieve_returns_hash_of_correct_recipe
-    options1 = {:ingredients=>'bun, dog, pickle, relish, tomato', :directions=>'assemble ingredients', :time=>'2', :meal=>'entree', :serves=>'1', :calories=>'300', :test_output=>true}
-    Recipe.create("Chicago Hot Dog", options1)
-    options2 =  {:ingredients=>'water, vegetables', :directions=>'boil ingredients together then cool', :time=>'10', :meal=>'entree', :serves=>'5', :calories=>'400', :test_output=>true}
-    Recipe.create("Cold Stew", options2)
-    result = Recipe.find_by(recipe_name: "Chicago Hot Dog")
+    options1 = {:recipe_name => "Chicago Hot Dog", :ingredients=>'bun, dog, pickle, relish, tomato', :directions=>'assemble ingredients', :time=>'2', :meal=>'entree', :serves=>'1', :calories=>'300'}
+    Recipe.create(options1)
+    options2 =  {:recipe_name => "Cold Stew", :ingredients=>'water, vegetables', :directions=>'boil ingredients together then cool', :time=>'10', :meal=>'entree', :serves=>'5', :calories=>'400'}
+    Recipe.create(options2)
+    result = Recipe.retrieve("Chicago Hot Dog")
+    # result_hash = result.attributes
+    # result_hash.delete("id")
+    # result_values = result_hash.values
     expected = ["Chicago Hot Dog", "bun, dog, pickle, relish, tomato", "assemble ingredients", 2, "entree", 1, 300]
     assert_equal expected, result
     teardown_unit_test
@@ -49,7 +54,10 @@ class TestUnitTest < RecipeTest
     Recipe.import("example_data3_simplerows.csv")
     result = Recipe.find_by(recipe_name: "Tacos")
     expected = ["Tacos", "beef, cheese, lettuce, sour cream, hot sauce", "cook the ground beef, assemble ingredients", 20, "entree", 4, 500]
-    assert_equal expected, result
+    result_hash = result.attributes
+    result_hash.delete("id")
+    result_array = result_hash.values
+    assert_equal expected, result_array
     teardown_unit_test
   end
 

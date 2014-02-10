@@ -1,19 +1,19 @@
-class Recipe
+class Recipe < ActiveRecord::Base
 
-  def self.all
-    # returns everything for all rows (except for id column)
-    database = Environment.database_connection
-    results = database.execute("select recipe_name, ingredients, directions, time, meal, serves,calories from recipes")
-  end
+  # def self.all
+  #   # returns everything for all rows (except for id column)
+  #   database = Environment.database_connection
+  #   results = database.execute("select recipe_name, ingredients, directions, time, meal, serves,calories from recipes")
+  # end
 
-  def self.count
-    self.all.length
-  end
+  # def self.count
+  #   self.all.length
+  # end
 
-  def self.create(name, options)
-    sql_statement = "INSERT INTO recipes(recipe_name, ingredients, directions, time, meal, serves, calories) VALUES('#{name}', '#{options[:ingredients]}', '#{options[:directions]}', #{options[:time]}, '#{options[:meal]}', #{options[:serves]}, #{options[:calories]})"
-    execute_sql(sql_statement)
-  end
+  # def self.create(name, options)
+  #   sql_statement = "INSERT INTO recipes(recipe_name, ingredients, directions, time, meal, serves, calories) VALUES('#{name}', '#{options[:ingredients]}', '#{options[:directions]}', #{options[:time]}, '#{options[:meal]}', #{options[:serves]}, #{options[:calories]})"
+  #   execute_sql(sql_statement)
+  # end
 
   def self.view(name)
     unformatted_recipe = retrieve(name)
@@ -31,13 +31,17 @@ class Recipe
     old_name = "'#{name}'"
     new_name = options[:recipe_name]
     serialization = self.serialize_hash(options)
-    sql_statement = "UPDATE recipes SET #{serialization} WHERE recipe_name=#{old_name}"
-    execute_sql(sql_statement)
+    record = Recipe.find_by(recipe_name: name)
+    record.update(serialization)
+    # sql_statement = "UPDATE recipes SET #{serialization} WHERE recipe_name=#{old_name}"
+    # execute_sql(sql_statement)
   end
 
   def self.delete(name, options)
-    sql_statement = "DELETE from recipes WHERE recipe_name='#{name}'"
-    execute_sql(sql_statement)
+    record = Recipe.find_by(recipe_name: name)
+    record.destroy
+    # sql_statement = "DELETE from recipes WHERE recipe_name='#{name}'"
+    # execute_sql(sql_statement)
   end
 
   def self.import(csv_filename_in_data_folder)
@@ -45,35 +49,37 @@ class Recipe
     name = ""
     options = {}
     CSV.foreach(file_path, headers: true) do |row_hash|
-      name = row_hash["recipe_name"]
-      options = {:ingredients => row_hash["ingredients"],
+      # name = row_hash["recipe_name"]
+      options = { :recipe_name => row_hash["recipe_name"],
+                        :ingredients => row_hash["ingredients"],
                         :directions => row_hash["directions"],
                         :time => row_hash["time"],
                         :meal => row_hash["meal"],
                         :serves => row_hash["serves"],
                         :calories => row_hash["calories"]}
-      create(name, options)
+      Recipe.create(options)
     end
   end
 
   def self.all_recipe_names
-    sql_statement = "select recipe_name from recipes"
-    recipe_array = execute_sql(sql_statement)
-    recipe_array.flatten.sort
+    Recipe.pluck(:recipe_name).sort
+    # sql_statement = "select recipe_name from recipes"
+    # recipe_array = execute_sql(sql_statement)
+    # recipe_array.flatten.sort
   end
 
 ######### Helper Functions #################
 
-  def self.execute_sql(sql_statement)
-    database = Environment.database_connection
+  # def self.execute_sql(sql_statement)
+    # database = Environment.database_connection
 =begin
 this thread across files
 (recipe.rb) database = Environment.database_connection
 (environment.rb in self.database_connection) Database.connection(@@environment)
 (database.rb in self.connection) @connection ||= Database.new("db/recipe_tracker_#{environment}.sqlite3")
 =end
-    database.execute(sql_statement)
-  end
+  #   database.execute(sql_statement)
+  # end
 
   def self.serialize_hash(hash)
     array = hash.to_a
@@ -85,23 +91,25 @@ this thread across files
     array_of_strings.join(",")
   end
 
-  def self.find_by(recipe_name_hash)
-    name = recipe_name_hash[:recipe_name]
-    sql_statement = "select recipe_name, ingredients, directions, time, meal, serves,calories from recipes WHERE recipe_name='#{name}'"
-    recipe_array = execute_sql(sql_statement)[0]
-    recipe_array
-  end
+  # def self.find_by(recipe_name_hash)
+  #   name = recipe_name_hash[:recipe_name]
+  #   sql_statement = "select recipe_name, ingredients, directions, time, meal, serves,calories from recipes WHERE recipe_name='#{name}'"
+  #   recipe_array = execute_sql(sql_statement)[0]
+  #   recipe_array
+  # end
 
   def self.retrieve(name)
-    sql_statement = "select recipe_name, ingredients, directions, time, meal, serves,calories from recipes WHERE recipe_name='#{name}'"
-    recipe_array = execute_sql(sql_statement)[0]
-    recipe_array
+    Recipe.where(recipe_name: name).pluck(:recipe_name, :ingredients, :directions, :time, :meal, :serves, :calories).flatten
+    # sql_statement = "select recipe_name, ingredients, directions, time, meal, serves,calories from recipes WHERE recipe_name='#{name}'"
+    # recipe_array = execute_sql(sql_statement)[0]
+    # recipe_array
   end
 
   def self.recipes_under_calories(calories)
-    sql_statement = "select recipe_name from recipes where calories < #{calories.to_i}"
-    recipe_array = execute_sql(sql_statement)
-    recipe_array.flatten
+    Recipe.where("calories < ?", calories.to_i).pluck(:recipe_name)
+    # sql_statement = "select recipe_name from recipes where calories < #{calories.to_i}"
+    # recipe_array = execute_sql(sql_statement)
+    # recipe_array.flatten
   end
 
   def self.format(unformatted_recipe)
