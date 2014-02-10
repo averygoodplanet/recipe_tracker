@@ -4,7 +4,7 @@ production:
     pool: 5
     timeout: 5000
 
- test:
+test:
     adapter: sqlite3
     database: db/recipe_tracker_test.sqlite3
     pool: 5

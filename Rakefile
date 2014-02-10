@@ -26,7 +26,10 @@ db_namespace = namespace :db do
   task :migrate do
     Environment.environment = 'production'
     Environment.connect_to_database
+    # runs the migrations located in db/migrate/
+    # migrations get the database state to current version
     ActiveRecord::Migrator.migrate("db/migrate/")
+    #db:schema:dump  updates the db/schema.rb file to match database structure
     db_namespace["schema:dump"].invoke
   end
   namespace :test do
