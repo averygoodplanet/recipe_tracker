@@ -1,5 +1,11 @@
 class Recipe
 
+  def self.all
+    # returns everything for all rows (except for id column)
+    database = Environment.database_connection
+    results = database.execute("select recipe_name, ingredients, directions, time, meal, serves,calories from recipes")
+  end
+
   def self.create(name, options)
     sql_statement = "INSERT INTO recipes(recipe_name, ingredients, directions, time, meal, serves, calories) VALUES('#{name}', '#{options[:ingredients]}', '#{options[:directions]}', #{options[:time]}, '#{options[:meal]}', #{options[:serves]}, #{options[:calories]})"
     execute_sql(sql_statement)

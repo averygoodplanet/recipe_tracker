@@ -22,14 +22,14 @@ class TestIntegrationTests < RecipeTest
 
   def test4_save_a_recipe
     `./recipe_tracker create 'Ham Sandwich' -i 'ham, cheese, bread' -d 'put between bread' -t 20 -m 'entree' -s 5 -c 40 -o`
-    results = database.execute("select recipe_name, ingredients, directions, time, meal, serves,calories from recipes")
+    results = Recipe.all
     expected = ["Ham Sandwich", 'ham, cheese, bread', 'put between bread', 20, 'entree', 5, 40]
     assert_equal expected, results[0]
   end
 
   def test5_save_a_recipe_with_test_database_teardown
     `./recipe_tracker create 'New Ham Sandwich' -i 'ham, cheese, bread' -d 'put between bread' -t 20 -m 'entree' -s 5 -c 40 -o`
-    results = database.execute("select recipe_name, ingredients, directions, time, meal, serves,calories from recipes")
+    results = Recipe.all
     expected = ["New Ham Sandwich", 'ham, cheese, bread', 'put between bread', 20, 'entree', 5, 40]
     assert_equal expected, results[0]
 
@@ -40,14 +40,14 @@ class TestIntegrationTests < RecipeTest
   def test6_update_a_recipe
     `./recipe_tracker create 'New Ham Sandwich' -i 'ham, cheese, bread' -d 'put between bread' -t 20 -m 'entree' -s 5 -c 40 -o`
     `./recipe_tracker edit "New Ham Sandwich" -n "Prosciutto Sandwich" -i "prosciutto, cheese, bread" -c 60 -o`
-    results = database.execute("select recipe_name, ingredients, directions, time, meal, serves,calories from recipes")
+    results = Recipe.all
     expected = ["Prosciutto Sandwich", "prosciutto, cheese, bread", "put between bread", 20, 'entree', 5, 60]
     assert_equal expected, results[0]
   end
 
   def test7_delete_a_recipe
     `./recipe_tracker create 'New Ham Sandwich' -i 'ham, cheese, bread' -d 'put between bread' -t 20 -m 'entree' -s 5 -c 40 -o`
-    results = database.execute("select recipe_name, ingredients, directions, time, meal, serves,calories from recipes")
+    results = Recipe.all
     expected = ["New Ham Sandwich", 'ham, cheese, bread', 'put between bread', 20, 'entree', 5, 40]
     assert_equal expected, results[0]
 
@@ -61,7 +61,7 @@ class TestIntegrationTests < RecipeTest
     `./recipe_tracker create 'Chicago Hot Dog' -i 'hot dog, bun, neon relish, tomato' -d 'assemble, eat, wait for heartburn' -t 5 -m 'entree' -s 1 -c 1000 -o`
     `./recipe_tracker create 'New Ham Slice' -i 'ham coldcuts' -d 'eat by hand' -t 2 -m 'snack' -s 1 -c 100 -o`
 
-    results = database.execute("select recipe_name, ingredients, directions, time, meal, serves,calories from recipes")
+    results = Recipe.all
     expected = ["New Ham Sandwich", 'ham, cheese, bread', 'put between bread', 20, 'entree', 5, 40]
     assert_equal expected, results[0]
 
