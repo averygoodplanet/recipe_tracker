@@ -6,6 +6,10 @@ class Recipe
     results = database.execute("select recipe_name, ingredients, directions, time, meal, serves,calories from recipes")
   end
 
+  def self.count
+    self.all.length
+  end
+
   def self.create(name, options)
     sql_statement = "INSERT INTO recipes(recipe_name, ingredients, directions, time, meal, serves, calories) VALUES('#{name}', '#{options[:ingredients]}', '#{options[:directions]}', #{options[:time]}, '#{options[:meal]}', #{options[:serves]}, #{options[:calories]})"
     execute_sql(sql_statement)
