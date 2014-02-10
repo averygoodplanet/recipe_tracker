@@ -78,6 +78,7 @@ class UserInterface
   def set_database_environment
     @options[:test_output] ? Environment.environment = "test" : Environment.environment = "production"
     @options.delete(:test_output)
+    Environment.connect_to_database
   end
 
   def check_for_missing_name
@@ -112,7 +113,9 @@ class UserInterface
       self.check_for_missing_name
       required_options = [:ingredients, :directions, :time, :meal, :serves, :calories]
       self.check_for_missing_options(required_options)
-      Recipe.create(@name, @options)
+      name_and_options = @options
+      name_and_options[:recipe_name] = @name
+      Recipe.create(name_and_options)
     when "view"
       self.check_for_missing_name
       Recipe.view(@name)
