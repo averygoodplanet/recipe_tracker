@@ -13,11 +13,13 @@ class RecipeTest < MiniTest::Unit::TestCase
 
   def database
     database = Environment.database_connection
+    # will swith to Environment.connect_to_database
   end
 
   def teardown
     database.execute("delete from recipes")
     # DatabaseCleaner.clean
+    # or e.g. Recipe.destroy_all
   end
 
   def assert_command_output expected, command

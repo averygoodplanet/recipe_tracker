@@ -5,7 +5,10 @@ require_relative 'helper'
 class TestUnitTest < RecipeTest
   def teardown_unit_test
     database = Environment.database_connection
+    # will swith to Environment.connect_to_database
     database.execute("delete from recipes")
+    # DatabaseCleaner.clean
+    # or e.g. Recipe.destroy_all
   end
 
   def test_1u_retrieve_returns_hash_of_correct_recipe
@@ -13,7 +16,7 @@ class TestUnitTest < RecipeTest
     Recipe.create("Chicago Hot Dog", options1)
     options2 =  {:ingredients=>'water, vegetables', :directions=>'boil ingredients together then cool', :time=>'10', :meal=>'entree', :serves=>'5', :calories=>'400', :test_output=>true}
     Recipe.create("Cold Stew", options2)
-    result =  Recipe.retrieve("Chicago Hot Dog")
+    result = Recipe.find_by(recipe_name: "Chicago Hot Dog")
     expected = ["Chicago Hot Dog", "bun, dog, pickle, relish, tomato", "assemble ingredients", 2, "entree", 1, 300]
     assert_equal expected, result
     teardown_unit_test
@@ -44,7 +47,7 @@ class TestUnitTest < RecipeTest
 
   def test_3u_import_takes_data_from_CSV_and_saves_to_database
     Recipe.import("example_data3_simplerows.csv")
-    result = Recipe.retrieve("Tacos")
+    result = Recipe.find_by(recipe_name: "Tacos")
     expected = ["Tacos", "beef, cheese, lettuce, sour cream, hot sauce", "cook the ground beef, assemble ingredients", 20, "entree", 4, 500]
     assert_equal expected, result
     teardown_unit_test

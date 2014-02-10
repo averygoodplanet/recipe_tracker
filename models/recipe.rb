@@ -75,6 +75,13 @@ this thread across files
     array_of_strings.join(",")
   end
 
+  def self.find_by(recipe_name_hash)
+    name = recipe_name_hash[:recipe_name]
+    sql_statement = "select recipe_name, ingredients, directions, time, meal, serves,calories from recipes WHERE recipe_name='#{name}'"
+    recipe_array = execute_sql(sql_statement)[0]
+    recipe_array
+  end
+
   def self.retrieve(name)
     sql_statement = "select recipe_name, ingredients, directions, time, meal, serves,calories from recipes WHERE recipe_name='#{name}'"
     recipe_array = execute_sql(sql_statement)[0]
